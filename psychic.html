@@ -1,0 +1,129 @@
+<!DOCTYPE>
+<html lang="en-us">
+
+<head>
+	<title>Psychic Game</title>
+
+	<style>
+		body{
+
+			font-size: 125%;
+		}
+
+		div {
+			padding: 12px;
+			width: 25%;
+		}
+
+		#w {
+			background-color: orange;
+		}
+
+		#l {
+			background-color: lightblue;
+		}
+
+		#g {
+			background-color: pink;
+		}
+
+		#last {
+			background-color: green;
+		}
+
+	</style>
+
+</head>
+<body>
+
+	<h1>Psychic Game</h1>
+
+	<p>Guess the letter I'm thinking of</p>
+	<br>
+
+	<div id="w">
+	Wins:<p id="wins">0</p>
+	</div>
+
+	<div id="l">
+	Loses:<p id= "lose">0</p>
+	</div>
+
+	<div id="g">
+	Remaining guesses:<p id="numOfGuess">12</p>
+	</div>
+
+	<div id="last">
+	Your guesses so far:<p id="guesses"></p>
+	</div>
+
+	<script type="text/javascript">
+		
+		var win = 0;
+		var lose = 0;
+		var numGuess = 12;
+		var psychGuess = getLetter();
+		var gArray = [];
+
+		var psychLetter;
+
+		document.onkeyup = function(event) {
+
+			console.log(event);
+			var keyhit = event.key;
+
+			if(keyhit == psychGuess) {
+
+				win += 1;
+				document.getElementById("wins").innerHTML = win;
+				newGame();
+			} else {
+
+				numGuess -= 1;
+				gArray.push(keyhit);
+				document.getElementById("guesses").innerHTML = gArray;
+
+				document.getElementById("numOfGuess").innerHTML = numGuess;
+
+				gArray.forEach(letterChecker)
+			}
+
+			function letterChecker
+
+			if(numGuess == 0) { newGame(); }
+
+			function colorFun () {
+
+				document.getElementById("w").style.backgroundColor = "yellow";
+			}
+
+		}
+
+		function newGame() {
+
+			numGuess = 12;
+			document.getElementById("numOfGuess").innerHTML = numGuess;
+			lose += 1;
+			document.getElementById("lose").innerHTML = lose;
+
+			gArray = [];
+			psychGuess = getLetter();
+			
+		}
+
+		function getLetter() {
+
+			var letter = "";
+			var outcomes = "abcdefghijklmnopqrstuvwxyz";
+
+			text = outcomes.charAt(Math.floor(Math.random() * outcomes.length ));
+			return text;
+		}
+
+		
+	</script>
+
+
+</body>
+
+</html>
