@@ -1,37 +1,180 @@
 <!DOCTYPE>
 <html lang="en-us">
+
 <head>
-	<meta charset="UTF-8">
-	<title>Hangman Game</title>
+	<title>Psychic Game</title>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="./assets/css/style.css">
+	<style>
+		body{
+			background-color: #ccffdc;
+			font-size: 125%;
+		}
 
-	<script type="text/javascript" src="./assets/javascript/game.js">
-	</script>
+		div {
+			padding: 12px;
+			width: 25%;
+			border: 5px solid #adb0b5;
+			border-left: 10px solid #d7dbe2;
+			border-right: 10px solid #d7dbe2;
+		}
 
+		#w {
+			border-top: 10px solid #adb0b5;
+			background-color: #f5f556;
+		}
+
+		#l {
+			background-color: #56f556;
+		}
+
+		#g {
+			background-color: #5691f5;
+		}
+
+		#last {
+			border-bottom: 10px solid #adb0b5;
+			background-color: #f55656;
+		}
+
+	</style>
 </head>
+
 <body>
 
-	<div class="box">
-		
-		<h3>Press Any Key To Get Started</h3>
-		<br>
+	<h1>Psychic Game</h1>
 
-		<h3>Wins</h3>
-		<p id="w"></p>
-		<br>
+	<p>Guess the letter I'm thinking of</p>
+	<br>
 
-		<h3>Current Word</h3>
-		<p id="unknown-word"></p>
-		<br>
-
-		<h3>Number Of Guesses Left</h3>
-		<p id="guess"></p>
-
+	<div id="w">
+	Wins:<p id="wins">0</p>
 	</div>
 
-</body>
+	<div id="l">
+	Loses:<p id= "lose">0</p>
+	</div>
 
+	<div id="g">
+	Remaining guesses:<p id="numOfGuess">12</p>
+	</div>
+
+	<div id="last">
+	Your guesses so far:<p id="guesses"></p>
+	</div>
+
+	<script type="text/javascript">
+		
+		var win = 0;
+		var lose = 0;
+		var numGuess = 12;
+		var psychGuess = getLetter();
+		var gArray = [];
+		var colorIndex = 0;
+		var psychLetter;
+		var outcomes = "abcdefghijklmnopqrstuvwxyz";
+
+		document.onkeyup = function(event) {
+
+			var isRepeat;
+			var isLetter = false;
+
+			var keyhit = event.key;
+			console.log("key hit was: " + keyhit);
+
+			if(keyhit == psychGuess) {
+
+				win += 1;
+				document.getElementById("wins").innerHTML = win;
+				newGame();
+			} else {
+
+				for (var i = 0; i< gArray.length; i++) {
+
+					if(gArray[i] == keyhit) {
+						isRepeat = true;
+					}
+				}
+
+				for (var i = 0; i<outcomes.length; i++) {
+				
+					do {
+						if(outcomes.charAt(i) == keyhit) {
+
+							isLetter = true;
+						} 
+
+					} while(isLetter == false);
+				}
+
+				if (isRepeat != true && isLetter == true) {
+					numGuess -= 1;
+					gArray.push(keyhit);
+
+					document.getElementById("guesses").innerHTML = gArray;
+					document.getElementById("numOfGuess").innerHTML = numGuess;
+				}
+			}
+
+			if(numGuess == 0) { 
+				newGame(); 
+			}
+			colorIndex ++;
+
+			if(colorIndex == 4) {
+				colorIndex = colorIndex-4;
+			}
+			console.log("color index is: " + colorIndex);
+			colorFun(colorIndex);
+
+
+			function colorFun(num) {
+
+				var colorBank = ["#f5f556", "#56f556", "#5691f5", "#f55656"];
+				var numA = num;
+				var numB = num+1;
+				var numC = num+2;
+				var numD = num+3;
+
+				if(numD>3) {
+					numD = numD-4;
+				}
+				if(numC>3) {
+					numC = numC-4;
+				}
+				if(numB>3) {
+					numB = numB-4;
+				}
+
+				document.getElementById("w").style.backgroundColor = colorBank[numA];
+				document.getElementById("l").style.backgroundColor = colorBank[numB];
+				document.getElementById("g").style.backgroundColor = colorBank[numC];
+				document.getElementById("last").style.backgroundColor = colorBank[numD];
+			
+			}
+		}
+
+		function newGame() {
+
+			numGuess = 12;
+			document.getElementById("numOfGuess").innerHTML = numGuess;
+			lose += 1;
+			document.getElementById("lose").innerHTML = lose;
+
+			gArray = [];
+			psychGuess = getLetter();
+			
+		}
+
+		function getLetter() {
+
+			var letter = "";
+			var outcomes = "abcdefghijklmnopqrstuvwxyz"; 
+
+			text = outcomes.charAt(Math.floor(Math.random() * outcomes.length ));
+			return text;
+		}
+
+	</script>
+</body>
 
 </html>
